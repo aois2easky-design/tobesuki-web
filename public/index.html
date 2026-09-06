@@ -19,52 +19,20 @@
   </style>
 </head>
 <body>
-  <main id="login">
+  <main>
     <h1>TOBESUKI</h1>
-    <p>HMAC署名で保護されたクエストWeb。</p>
-    <form id="login-form">
-      <label>ユーザー名<input name="username" autocomplete="username" required></label>
-      <label>パスワード<input name="password" type="password" autocomplete="current-password" required></label>
-      <button>ログイン</button>
-    </form>
-    <p class="status" id="login-status"></p>
-  </main>
-  <main id="app">
-    <h1>QUESTS</h1>
-    <p id="welcome"></p>
+    <p>TOBESUKIのクエストWeb。誰でもアクセスできます。</p>
+    <h2>QUESTS</h2>
     <ul id="quests"></ul>
-    <button id="logout">ログアウト</button>
   </main>
   <script>
-    const login = document.querySelector('#login');
-    const app = document.querySelector('#app');
-    const status = document.querySelector('#login-status');
-    async function loadSession() {
-      const response = await fetch('/api/me');
-      if (!response.ok) return;
-        const session = await response.json();
-        login.style.display = 'none';
-        app.style.display = 'block';
-        document.querySelector('#welcome').textContent = session.username + ' さん、ようこそ。';
-        const quests = await fetch('/api/quests').then((result) => result.json());
-        document.querySelector('#quests').innerHTML = quests.quests.map((quest) => `<li>${quest.title} <small>${quest.status}</small></li>`).join('');
-    }
-    document.querySelector('#login-form').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const body = Object.fromEntries(new FormData(event.target));
-      try {
-        const response = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-        if (response.ok) return loadSession();
-        status.textContent = (await response.json()).error;
-      } catch {
-        status.textContent = 'サーバーに接続できません。';
-      }
-    });
-    document.querySelector('#logout').addEventListener('click', async () => {
-      await fetch('/api/logout', { method: 'POST' });
-      location.reload();
-    });
-    loadSession();
+    fetch('/api/quests')
+      .then((response) => response.json())
+      .then((data) => {
+        document.querySelector('#quests').innerHTML = data.quests
+          .map((quest) => `<li>${quest.title} <small>${quest.status}</small></li>`)
+          .join('');
+      });
   </script>
 </body>
 </html>

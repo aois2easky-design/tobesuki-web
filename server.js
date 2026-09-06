@@ -103,8 +103,6 @@ const server = createServer(async (request, response) => {
   }
 
   if (request.method === 'GET' && url.pathname === '/api/quests') {
-    const session = getSession(request);
-    if (!session) return sendJson(response, 401, { error: 'ログインが必要です' });
     return sendJson(response, 200, { quests: [{ id: 'welcome', title: 'TOBESUKIへようこそ', status: 'available' }] });
   }
 

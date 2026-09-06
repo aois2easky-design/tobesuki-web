@@ -9,7 +9,3 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: HMAC_SECRET
-        generateValue: true
-      - key: WEB_USERS
-        sync: false
