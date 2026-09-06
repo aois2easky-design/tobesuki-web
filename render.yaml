@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: tobesuki-web
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HMAC_SECRET
+        generateValue: true
+      - key: WEB_USERS
+        sync: false
