@@ -1,15 +1,11 @@
 {
-  "name": "tobesuki-web",
-  "version": "1.0.0",
+  "name": "tobesuki-cloudflare",
   "private": true,
-  "description": "TOBESUKI web app with HMAC-signed authentication",
-  "type": "module",
+  "version": "1.0.0",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
-    "check": "node --check server.js"
+    "deploy": "wrangler deploy"
   },
-  "engines": {
-    "node": ">=20"
+  "devDependencies": {
+    "wrangler": "^4.0.0"
   }
 }
