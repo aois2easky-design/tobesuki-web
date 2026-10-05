@@ -1,38 +1,263 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TOBESUKI</title>
-  <style>
-    :root { color-scheme: light; font-family: Georgia, serif; color: #1d2925; background: #f2efe7; }
-    body { max-width: 720px; margin: 0 auto; padding: 12vh 24px; }
-    main { background: #fffdf6; border: 1px solid #d4ccbb; padding: 40px; box-shadow: 8px 8px 0 #cad8c4; }
-    h1 { margin-top: 0; font-size: 3rem; letter-spacing: .04em; }
-    p { line-height: 1.7; }
-    label { display: block; margin-top: 18px; font-size: .9rem; }
-    input, button { box-sizing: border-box; width: 100%; padding: 12px; margin-top: 6px; font: inherit; border: 1px solid #aeb8a8; }
-    button { margin-top: 24px; color: #fffdf6; background: #28594b; border-color: #28594b; cursor: pointer; }
-    #app { display: none; }
-    .status { min-height: 1.5em; color: #9b4b37; }
-    li { margin: 12px 0; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#15352d" />
+  <meta name="description" content="北海道の好きな味から、作り手と次の訪問先へ。地域の味を現地で体験し記録するフードクエスト。" />
+  <title>TOBESUKI｜味のつづきを、たどる。</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@500;700&family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="/assets/index-drfxcrpt.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-bor2vwtq.css">
 </head>
 <body>
-  <main>
-    <h1>TOBESUKI</h1>
-    <p>TOBESUKIのクエストWeb。誰でもアクセスできます。</p>
-    <h2>QUESTS</h2>
-    <ul id="quests"></ul>
-  </main>
-  <script>
-    fetch('/api/quests')
-      .then((response) => response.json())
-      .then((data) => {
-        document.querySelector('#quests').innerHTML = data.quests
-          .map((quest) => `<li>${quest.title} <small>${quest.status}</small></li>`)
-          .join('');
-      });
-  </script>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="brand" data-view="home" aria-label="ホームへ">
+        <span class="brand-mark">T</span><span><strong>TOBESUKI</strong><small>味のつづきを、たどる。</small></span>
+      </button>
+      <button class="account-pill" id="accountButton"><span class="account-dot"></span><span id="accountLabel">旅人登録</span></button>
+    </header>
+
+    <main>
+      <section class="view active" id="view-home">
+        <section class="hero">
+          <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+          <div class="hero-copy reveal">
+            <p class="eyebrow"><span>HOKKAIDO FOOD QUEST</span><b>全道106拠点</b></p>
+            <h1>好きな味の<br><em>つづき</em>へ。</h1>
+            <p class="hero-lead">消えるかもしれない地域の味を、義務ではなく好奇心で訪ねる。作り手の物語が、次の一軒への地図になる。</p>
+            <div class="hero-actions">
+              <button class="primary-btn" data-view="map">現在地から探す <span>↗</span></button>
+              <button class="text-btn" data-view="discover">106の物語を見る</button>
+            </div>
+          </div>
+          <div class="quest-card reveal delay-1">
+            <div class="quest-card-top"><span>あなたの旅の記録</span><b>QUEST 01</b></div>
+            <div class="quest-stats"><strong id="heroStampCount">0</strong><span>/ 106<br>味印</span></div>
+            <div class="quest-progress"><i id="heroProgress"></i></div>
+            <p id="heroMessage">最初の一杯から、北海道の物語が動き出す。</p>
+          </div>
+        </section>
+
+        <section class="mission-section section-pad">
+          <div class="section-kicker">WHY NOW?</div>
+          <h2>「いつか」が、<br>間に合わない味がある。</h2>
+          <p>TOBESUKIが直接解決するのは、認知・訪問・購買・記録。後継者問題を大きく言い切らず、味が残るための需要と関係人口を積み重ねます。</p>
+          <div class="cycle-track">
+            <div><b>01</b><strong>好き</strong><small>味から始める</small></div><i>→</i>
+            <div><b>02</b><strong>知る</strong><small>背景に触れる</small></div><i>→</i>
+            <div><b>03</b><strong>訪ねる</strong><small>現地で味わう</small></div><i>→</i>
+            <div><b>04</b><strong>残す</strong><small>味印を刻む</small></div>
+          </div>
+        </section>
+
+        <section class="featured-section section-pad">
+          <div class="section-heading"><div><span class="section-kicker">STORY CHAINS</span><h2>物語で選ぶ、次の一軒</h2></div><button class="arrow-btn" data-view="discover">すべて見る →</button></div>
+          <div class="feature-scroll" id="homeFeatures"></div>
+        </section>
+
+        <section class="qr-banner">
+          <div class="qr-seal">読<br>取</div><div><span>現地だけの出会いを記録</span><h2>QRを読んで、<br>味印を手に入れる。</h2><p>店頭の印を読み込むと、御朱印帳にその日の味と物語が刻まれます。</p></div>
+          <button class="cream-btn" id="homeQrButton">QRを読み取る</button>
+        </section>
+      </section>
+
+      <section class="view" id="view-discover">
+        <div class="page-head"><span>DISCOVER 106 STORIES</span><h1>全道の味を探す</h1><p>ランキングではなく、気になる考え方から選ぶ。</p></div>
+        <div class="sticky-tools">
+          <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="店名・味・物語で検索" /></label>
+          <div class="filter-scroll" id="regionFilters"></div>
+          <div class="filter-scroll story-filter" id="storyFilters"></div>
+        </div>
+        <div class="result-meta"><strong id="resultCount">106</strong>件の物語 <button id="nearSortButton">現在地に近い順</button></div>
+        <div class="store-grid" id="storeGrid"></div>
+      </section>
+
+      <section class="view map-view" id="view-map">
+        <div class="map-head">
+          <div><span>LIVE HOKKAIDO MAP</span><h1>今いる場所から、味へ。</h1></div>
+          <button class="locate-btn" id="locateButton">◎ 現在地を取得</button>
+        </div>
+        <div id="mainMap" class="main-map"></div>
+        <div class="map-legend"><span><i class="legend-pin"></i>掲載拠点</span><span><i class="legend-user"></i>現在地</span><b id="mapStatus">ピンを選ぶと距離を表示</b></div>
+        <div class="nearby-panel"><div class="section-heading compact"><div><span class="section-kicker">NEAR YOU</span><h2>近くの味</h2></div></div><div id="nearbyList"></div></div>
+      </section>
+
+      <section class="view" id="view-journey">
+        <div class="page-head journey-head"><span>YOUR TASTE TRAIL</span><h1>旅の道筋</h1><p>「好き」の連鎖を、走れるルートに変える。</p></div>
+        <div class="journey-builder">
+          <div class="journey-summary"><span>選択中</span><strong><b id="routeCount">0</b> SPOTS</strong><p id="routeSummary">気になる店の「旅に追加」を押してください。</p></div>
+          <div id="routeTimeline" class="route-timeline empty"></div>
+          <div class="journey-actions"><button class="secondary-btn" id="autoRouteButton">近くから自動提案</button><button class="primary-btn" id="drawRouteButton">道筋を地図で見る</button></div>
+          <button class="save-route-btn" id="saveRouteButton">この旅をアカウントに保存</button>
+        </div>
+        <section class="route-philosophy section-pad"><span class="section-kicker">NOT A RANKING</span><h2>近いから、だけでは<br>つながない。</h2><p>同じ味の店を並べるのではなく、継承・再点火・土地・越境・不足からの創出という物語の違いが、旅に奥行きをつくります。</p></section>
+      </section>
+
+      <section class="view" id="view-book">
+        <div class="book-hero">
+          <span>MY TASTE ARCHIVE</span><h1>旅の味印帳</h1><p>何軒回ったかではなく、どんな「好き」に出会ったか。</p>
+          <div class="book-count"><strong id="bookCount">0</strong><span>味との出会い</span></div>
+        </div>
+        <div class="book-controls"><p id="bookMessage">まだ白いページです。現地でQRを読み取ると、最初の印が残ります。</p><button class="primary-btn" id="bookQrButton">QRで味印を受け取る</button></div>
+        <div class="stamp-book" id="stampBook"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="メインメニュー">
+      <button class="active" data-view="home"><span>⌂</span><b>ホーム</b></button>
+      <button data-view="discover"><span>◇</span><b>探す</b></button>
+      <button data-view="map"><span>⌖</span><b>地図</b></button>
+      <button class="nav-quest" data-view="journey"><span>↝</span><b>旅程</b></button>
+      <button data-view="book"><span>印</span><b>味印帳</b></button>
+    </nav>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="store-drawer" id="storeDrawer" aria-hidden="true"></aside>
+
+  <dialog class="modal" id="authModal">
+    <button class="modal-close" data-close-modal>×</button>
+    <span class="modal-kicker">TRAVELER ACCOUNT</span><h2 id="authTitle">旅の記録を、持ち歩く。</h2>
+    <p id="authIntro">登録すると味印と旅程がデータベースに保存され、別の端末でも続きを楽しめます。</p>
+    <form id="authForm">
+      <label id="nameField">旅人名<input name="name" autocomplete="name" placeholder="例：ミルク旅人" /></label>
+      <label>メールアドレス<input name="email" type="email" autocomplete="email" required /></label>
+      <label>パスワード<input name="password" type="password" minlength="8" autocomplete="current-password" required /></label>
+      <p class="form-error" id="authError"></p><button class="primary-btn wide" type="submit" id="authSubmit">無料で旅人登録</button>
+    </form>
+    <button class="auth-switch" id="authSwitch">登録済みの方はこちら</button>
+    <div class="signed-in-panel" id="signedInPanel" hidden><div class="traveler-avatar">旅</div><strong id="signedInName"></strong><small id="signedInEmail"></small><button class="secondary-btn" id="logoutButton">ログアウト</button></div>
+  </dialog>
+
+  <dialog class="modal qr-modal" id="qrModal">
+    <button class="modal-close" data-close-modal>×</button><span class="modal-kicker">ON-SITE QR</span><h2>味印を受け取る</h2>
+    <p>店頭のTOBESUKI QRを枠内に入れてください。カメラは読み取りにだけ使います。</p>
+    <div id="qrReader"></div><p class="qr-status" id="qrStatus">カメラを起動しています…</p>
+    <button class="demo-link" id="demoStampButton">プロトタイプ用：近くの味印を試す</button>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+
+<!-- ============================================================ -->
+<!-- ここから下は、既存のTOBESUKI本体とは完全に独立した追加機能です。 -->
+<!-- 「味印」のクラウドバックアップ・復元のみを行い、本体のコードには -->
+<!-- 一切触れません。 -->
+<!-- ============================================================ -->
+<div id="backupPanel" style="position:fixed; left:12px; bottom:84px; z-index:200; font-family:sans-serif;">
+  <button id="backupToggleBtn" style="background:#15352d; color:#fff; border:1px solid #ffffff40; border-radius:999px; padding:8px 14px; font-size:11px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,0.3);">☁️ バックアップ</button>
+  <div id="backupBox" style="display:none; position:absolute; bottom:44px; left:0; width:260px; background:#fff; color:#15352d; border-radius:12px; padding:14px; box-shadow:0 8px 24px rgba(0,0,0,0.3); font-size:12px; line-height:1.6;">
+    <div style="font-weight:bold; margin-bottom:8px;">味印のクラウドバックアップ</div>
+    <div style="color:#666; margin-bottom:10px; font-size:11px;">ログインなしで、味印の記録を他の端末に引き継げます。下のIDは、他の人に知られると復元されてしまうため、取り扱いにご注意ください。</div>
+
+    <div style="margin-bottom:10px;">
+      <div style="font-size:10.5px; color:#888;">あなたの端末ID</div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <input id="backupDeviceIdDisplay" readonly style="flex:1; font-size:10px; padding:5px; border:1px solid #ddd; border-radius:6px; background:#f7f7f7;">
+        <button id="backupCopyBtn" style="font-size:10px; padding:5px 8px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer;">コピー</button>
+      </div>
+    </div>
+
+    <button id="backupSaveBtn" style="width:100%; background:#15352d; color:#fff; border:0; border-radius:8px; padding:9px; font-size:11px; cursor:pointer; margin-bottom:10px;">今の味印をバックアップする</button>
+
+    <div style="border-top:1px solid #eee; padding-top:10px;">
+      <div style="font-size:10.5px; color:#888; margin-bottom:4px;">別の端末のIDから復元</div>
+      <input id="backupRestoreInput" placeholder="端末IDを貼り付け" style="width:100%; font-size:10px; padding:5px; border:1px solid #ddd; border-radius:6px; margin-bottom:6px; box-sizing:border-box;">
+      <button id="backupRestoreBtn" style="width:100%; background:#fff; color:#15352d; border:1px solid #15352d; border-radius:8px; padding:9px; font-size:11px; cursor:pointer;">このIDから復元する</button>
+    </div>
+
+    <div id="backupStatus" style="margin-top:8px; font-size:10.5px; color:#15352d; min-height:14px;"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const DEVICE_KEY = "tobesuki-backup-device-id";
+  const STAMPS_KEY = "tobesuki-guest-stamps"; // 本体が実際に使っているキー。読み取り専用で参照する。
+
+  function getOrCreateDeviceId(){
+    let id = localStorage.getItem(DEVICE_KEY);
+    if(!id){
+      id = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
+      localStorage.setItem(DEVICE_KEY, id);
+    }
+    return id;
+  }
+
+  function setStatus(msg){
+    const el = document.getElementById("backupStatus");
+    if(el) el.textContent = msg;
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    const deviceId = getOrCreateDeviceId();
+    const toggleBtn = document.getElementById("backupToggleBtn");
+    const box = document.getElementById("backupBox");
+    const idDisplay = document.getElementById("backupDeviceIdDisplay");
+    const copyBtn = document.getElementById("backupCopyBtn");
+    const saveBtn = document.getElementById("backupSaveBtn");
+    const restoreInput = document.getElementById("backupRestoreInput");
+    const restoreBtn = document.getElementById("backupRestoreBtn");
+
+    idDisplay.value = deviceId;
+
+    toggleBtn.addEventListener("click", function(){
+      box.style.display = (box.style.display === "none") ? "block" : "none";
+    });
+
+    copyBtn.addEventListener("click", async function(){
+      try{
+        await navigator.clipboard.writeText(deviceId);
+        setStatus("コピーしました。");
+      }catch{
+        setStatus("コピーできませんでした。手動で選択してください。");
+      }
+    });
+
+    saveBtn.addEventListener("click", async function(){
+      setStatus("バックアップ中…");
+      try{
+        const storeIds = JSON.parse(localStorage.getItem(STAMPS_KEY) || "[]");
+        const res = await fetch("/api/backup-stamps", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({ deviceId, storeIds })
+        });
+        if(!res.ok) throw new Error("保存に失敗");
+        setStatus(`${storeIds.length}件の味印をバックアップしました。`);
+      }catch(e){
+        setStatus("バックアップに失敗しました。通信環境をご確認ください。");
+      }
+    });
+
+    restoreBtn.addEventListener("click", async function(){
+      const targetId = restoreInput.value.trim();
+      if(!targetId){
+        setStatus("端末IDを入力してください。");
+        return;
+      }
+      setStatus("復元中…");
+      try{
+        const res = await fetch("/api/backup-stamps?device=" + encodeURIComponent(targetId));
+        if(!res.ok) throw new Error("取得に失敗");
+        const data = await res.json();
+        if(!data.found){
+          setStatus("そのIDのバックアップは見つかりませんでした。");
+          return;
+        }
+        localStorage.setItem(STAMPS_KEY, JSON.stringify(data.storeIds));
+        setStatus(`${data.storeIds.length}件を復元しました。再読み込みします…`);
+        setTimeout(() => location.reload(), 1200);
+      }catch(e){
+        setStatus("復元に失敗しました。通信環境をご確認ください。");
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
