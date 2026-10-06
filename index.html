@@ -12,20 +12,37 @@
   <script type="module" crossorigin src="/index-drfxcrpt.js"></script>
   <link rel="stylesheet" crossorigin href="/index-bor2vwtq.css">
   <style>
+    /* Fix cycle-track alignment */
     .cycle-track {
       display: flex !important;
       flex-wrap: wrap !important;
       align-items: center !important;
-      gap: 1.5rem !important;
       justify-content: center !important;
+      gap: 12px !important;
+      row-gap: 18px !important;
     }
     .cycle-track > div {
-      flex: 0 1 auto !important;
-      text-align: center !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 180px !important;
+      height: auto !important;
+      min-height: 90px !important;
+      line-height: 1.2 !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
     .cycle-track > i {
-      flex: 0 1 auto !important;
-      font-size: 1.5rem !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 24px !important;
+      width: 32px !important;
+      height: 32px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      flex-shrink: 0 !important;
     }
   </style>
 </head>
