@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@500;700&family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="./assets/index-drfxcrpt.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-bor2vwtq.css">
+  <script type="module" crossorigin src="/assets/index-drfxcrpt.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-bor2vwtq.css">
 </head>
 <body>
   <div class="app-shell">
@@ -55,12 +55,12 @@
         </section>
 
         <section class="featured-section section-pad">
-          <div class="section-heading"><div><span class="section-kicker">STORY CHAINS</span><h2>物語で選ぶ、次の一軒</h2></div><button class="arrow-btn" data-view="discover">すべて見る →</button></div>
+          <div class="section-heading"><div><span class="section-kicker">STORY CHAINS</span><h2>物語で選ぶ、次の一軒</h2></div><button class="arrow-btn" data-view="discover">すべて見る</button></div>
           <div class="feature-scroll" id="homeFeatures"></div>
         </section>
 
         <section class="qr-banner">
-          <div class="qr-seal">読<br>取</div><div><span>現地だけの出会いを記録</span><h2>QRを読んで、<br>味印を手に入れる。</h2><p>店頭の印を読み込むと、御朱印帳にその日の味と物語が刻まれます。</p></div>
+          <div class="qr-seal">読<br>取</div><div><span>現地だけの出会いを記録</span><h2>QRを読んで、<br>味印を手に入れる。</h2><p>店頭の印を読み込むと、地域の物語と出会えます。</p></div>
           <button class="cream-btn" id="homeQrButton">QRを読み取る</button>
         </section>
       </section>
@@ -94,7 +94,7 @@
           <div class="journey-actions"><button class="secondary-btn" id="autoRouteButton">近くから自動提案</button><button class="primary-btn" id="drawRouteButton">道筋を地図で見る</button></div>
           <button class="save-route-btn" id="saveRouteButton">この旅をアカウントに保存</button>
         </div>
-        <section class="route-philosophy section-pad"><span class="section-kicker">NOT A RANKING</span><h2>近いから、だけでは<br>つながない。</h2><p>同じ味の店を並べるのではなく、継承・再点火・土地・越境・不足からの創出という物語の違いが、旅に奥行きをつくります。</p></section>
+        <section class="route-philosophy section-pad"><span class="section-kicker">NOT A RANKING</span><h2>近いから、だけでは<br>つながない。</h2><p>同じ味の店を並べるのではなく、意味の連鎖を育てます。</p></section>
       </section>
 
       <section class="view" id="view-book">
@@ -102,7 +102,7 @@
           <span>MY TASTE ARCHIVE</span><h1>旅の味印帳</h1><p>何軒回ったかではなく、どんな「好き」に出会ったか。</p>
           <div class="book-count"><strong id="bookCount">0</strong><span>味との出会い</span></div>
         </div>
-        <div class="book-controls"><p id="bookMessage">まだ白いページです。現地でQRを読み取ると、最初の印が残ります。</p><button class="primary-btn" id="bookQrButton">QRで味印を受け取る</button></div>
+        <div class="book-controls"><p id="bookMessage">まだ白いページです。現地でQRを読み取ると、最初の印が残ります。</p><button class="primary-btn" id="bookQrButton">QRで記録</button></div>
         <div class="stamp-book" id="stampBook"></div>
       </section>
     </main>
@@ -130,7 +130,7 @@
       <p class="form-error" id="authError"></p><button class="primary-btn wide" type="submit" id="authSubmit">無料で旅人登録</button>
     </form>
     <button class="auth-switch" id="authSwitch">登録済みの方はこちら</button>
-    <div class="signed-in-panel" id="signedInPanel" hidden><div class="traveler-avatar">旅</div><strong id="signedInName"></strong><small id="signedInEmail"></small><button class="secondary-btn" id="logoutButton">ログアウト</button></div>
+    <div class="signed-in-panel" id="signedInPanel" hidden><div class="traveler-avatar">旅</div><strong id="signedInName"></strong><small id="signedInEmail"></small><button class="secondary-btn" id="signOutButton">ログアウト</button></div>
   </dialog>
 
   <dialog class="modal qr-modal" id="qrModal">
@@ -142,122 +142,99 @@
 
   <div class="toast" id="toast" role="status"></div>
 
-<!-- ============================================================ -->
-<!-- ここから下は、既存のTOBESUKI本体とは完全に独立した追加機能です。 -->
-<!-- 「味印」のクラウドバックアップ・復元のみを行い、本体のコードには -->
-<!-- 一切触れません。 -->
-<!-- ============================================================ -->
-<div id="backupPanel" style="position:fixed; left:12px; bottom:84px; z-index:200; font-family:sans-serif;">
-  <button id="backupToggleBtn" style="background:#15352d; color:#fff; border:1px solid #ffffff40; border-radius:999px; padding:8px 14px; font-size:11px; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,0.3);">☁️ バックアップ</button>
-  <div id="backupBox" style="display:none; position:absolute; bottom:44px; left:0; width:260px; background:#fff; color:#15352d; border-radius:12px; padding:14px; box-shadow:0 8px 24px rgba(0,0,0,0.3); font-size:12px; line-height:1.6;">
-    <div style="font-weight:bold; margin-bottom:8px;">味印のクラウドバックアップ</div>
-    <div style="color:#666; margin-bottom:10px; font-size:11px;">ログインなしで、味印の記録を他の端末に引き継げます。下のIDは、他の人に知られると復元されてしまうため、取り扱いにご注意ください。</div>
+  <script>
+    (function(){
+      "use strict";
+      const DEVICE_KEY = "tobesuki-backup-device-id";
+      const STAMPS_KEY = "tobesuki-guest-stamps";
 
-    <div style="margin-bottom:10px;">
-      <div style="font-size:10.5px; color:#888;">あなたの端末ID</div>
-      <div style="display:flex; gap:6px; align-items:center;">
-        <input id="backupDeviceIdDisplay" readonly style="flex:1; font-size:10px; padding:5px; border:1px solid #ddd; border-radius:6px; background:#f7f7f7;">
-        <button id="backupCopyBtn" style="font-size:10px; padding:5px 8px; border:1px solid #ddd; border-radius:6px; background:#fff; cursor:pointer;">コピー</button>
-      </div>
-    </div>
-
-    <button id="backupSaveBtn" style="width:100%; background:#15352d; color:#fff; border:0; border-radius:8px; padding:9px; font-size:11px; cursor:pointer; margin-bottom:10px;">今の味印をバックアップする</button>
-
-    <div style="border-top:1px solid #eee; padding-top:10px;">
-      <div style="font-size:10.5px; color:#888; margin-bottom:4px;">別の端末のIDから復元</div>
-      <input id="backupRestoreInput" placeholder="端末IDを貼り付け" style="width:100%; font-size:10px; padding:5px; border:1px solid #ddd; border-radius:6px; margin-bottom:6px; box-sizing:border-box;">
-      <button id="backupRestoreBtn" style="width:100%; background:#fff; color:#15352d; border:1px solid #15352d; border-radius:8px; padding:9px; font-size:11px; cursor:pointer;">このIDから復元する</button>
-    </div>
-
-    <div id="backupStatus" style="margin-top:8px; font-size:10.5px; color:#15352d; min-height:14px;"></div>
-  </div>
-</div>
-
-<script>
-(function(){
-  "use strict";
-  const DEVICE_KEY = "tobesuki-backup-device-id";
-  const STAMPS_KEY = "tobesuki-guest-stamps"; // 本体が実際に使っているキー。読み取り専用で参照する。
-
-  function getOrCreateDeviceId(){
-    let id = localStorage.getItem(DEVICE_KEY);
-    if(!id){
-      id = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
-      localStorage.setItem(DEVICE_KEY, id);
-    }
-    return id;
-  }
-
-  function setStatus(msg){
-    const el = document.getElementById("backupStatus");
-    if(el) el.textContent = msg;
-  }
-
-  document.addEventListener("DOMContentLoaded", function(){
-    const deviceId = getOrCreateDeviceId();
-    const toggleBtn = document.getElementById("backupToggleBtn");
-    const box = document.getElementById("backupBox");
-    const idDisplay = document.getElementById("backupDeviceIdDisplay");
-    const copyBtn = document.getElementById("backupCopyBtn");
-    const saveBtn = document.getElementById("backupSaveBtn");
-    const restoreInput = document.getElementById("backupRestoreInput");
-    const restoreBtn = document.getElementById("backupRestoreBtn");
-
-    idDisplay.value = deviceId;
-
-    toggleBtn.addEventListener("click", function(){
-      box.style.display = (box.style.display === "none") ? "block" : "none";
-    });
-
-    copyBtn.addEventListener("click", async function(){
-      try{
-        await navigator.clipboard.writeText(deviceId);
-        setStatus("コピーしました。");
-      }catch{
-        setStatus("コピーできませんでした。手動で選択してください。");
-      }
-    });
-
-    saveBtn.addEventListener("click", async function(){
-      setStatus("バックアップ中…");
-      try{
-        const storeIds = JSON.parse(localStorage.getItem(STAMPS_KEY) || "[]");
-        const res = await fetch("/api/backup-stamps", {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({ deviceId, storeIds })
-        });
-        if(!res.ok) throw new Error("保存に失敗");
-        setStatus(`${storeIds.length}件の味印をバックアップしました。`);
-      }catch(e){
-        setStatus("バックアップに失敗しました。通信環境をご確認ください。");
-      }
-    });
-
-    restoreBtn.addEventListener("click", async function(){
-      const targetId = restoreInput.value.trim();
-      if(!targetId){
-        setStatus("端末IDを入力してください。");
-        return;
-      }
-      setStatus("復元中…");
-      try{
-        const res = await fetch("/api/backup-stamps?device=" + encodeURIComponent(targetId));
-        if(!res.ok) throw new Error("取得に失敗");
-        const data = await res.json();
-        if(!data.found){
-          setStatus("そのIDのバックアップは見つかりませんでした。");
-          return;
+      function getOrCreateDeviceId(){
+        let id = localStorage.getItem(DEVICE_KEY);
+        if(!id){
+          id = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
+          localStorage.setItem(DEVICE_KEY, id);
         }
-        localStorage.setItem(STAMPS_KEY, JSON.stringify(data.storeIds));
-        setStatus(`${data.storeIds.length}件を復元しました。再読み込みします…`);
-        setTimeout(() => location.reload(), 1200);
-      }catch(e){
-        setStatus("復元に失敗しました。通信環境をご確認ください。");
+        return id;
       }
-    });
-  });
-})();
-</script>
+
+      function setStatus(msg){
+        const el = document.getElementById("backupStatus");
+        if(el) el.textContent = msg;
+      }
+
+      document.addEventListener("DOMContentLoaded", function(){
+        const deviceId = getOrCreateDeviceId();
+        const toggleBtn = document.getElementById("backupToggleBtn");
+        const box = document.getElementById("backupBox");
+        const idDisplay = document.getElementById("backupDeviceIdDisplay");
+        const copyBtn = document.getElementById("backupCopyBtn");
+        const saveBtn = document.getElementById("backupSaveBtn");
+        const restoreInput = document.getElementById("backupRestoreInput");
+        const restoreBtn = document.getElementById("backupRestoreBtn");
+
+        if (idDisplay) idDisplay.value = deviceId;
+
+        if (toggleBtn && box) {
+          toggleBtn.addEventListener("click", function(){
+            box.style.display = (box.style.display === "none") ? "block" : "none";
+          });
+        }
+
+        if (copyBtn) {
+          copyBtn.addEventListener("click", async function(){
+            try{
+              await navigator.clipboard.writeText(deviceId);
+              setStatus("コピーしました。");
+            }catch{
+              setStatus("コピーできませんでした。手動で選択してください。");
+            }
+          });
+        }
+
+        if (saveBtn) {
+          saveBtn.addEventListener("click", async function(){
+            setStatus("バックアップ中…");
+            try{
+              const storeIds = JSON.parse(localStorage.getItem(STAMPS_KEY) || "[]");
+              const res = await fetch("/api/backup-stamps", {
+                method: "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({ deviceId, storeIds })
+              });
+              if(!res.ok) throw new Error("保存に失敗");
+              setStatus(`${storeIds.length}件の味印をバックアップしました。`);
+            }catch(e){
+              setStatus("バックアップに失敗しました。通信環境をご確認ください。");
+            }
+          });
+        }
+
+        if (restoreBtn) {
+          restoreBtn.addEventListener("click", async function(){
+            const targetId = restoreInput.value.trim();
+            if(!targetId){
+              setStatus("端末IDを入力してください。");
+              return;
+            }
+            setStatus("復元中…");
+            try{
+              const res = await fetch("/api/backup-stamps?device=" + encodeURIComponent(targetId));
+              if(!res.ok) throw new Error("取得に失敗");
+              const data = await res.json();
+              if(!data.found){
+                setStatus("そのIDのバックアップは見つかりませんでした。");
+                return;
+              }
+              localStorage.setItem(STAMPS_KEY, JSON.stringify(data.storeIds));
+              setStatus(`${data.storeIds.length}件を復元しました。再読み込みします…`);
+              setTimeout(() => location.reload(), 1200);
+            }catch(e){
+              setStatus("復元に失敗しました。通信環境をご確認ください。");
+            }
+          });
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
