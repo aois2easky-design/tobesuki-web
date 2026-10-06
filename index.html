@@ -12,37 +12,61 @@
   <script type="module" crossorigin src="/index-drfxcrpt.js"></script>
   <link rel="stylesheet" crossorigin href="/index-bor2vwtq.css">
   <style>
-    /* Fix cycle-track alignment */
     .cycle-track {
       display: flex !important;
       flex-wrap: wrap !important;
-      align-items: center !important;
       justify-content: center !important;
-      gap: 12px !important;
-      row-gap: 18px !important;
-    }
-    .cycle-track > div {
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      justify-content: center !important;
-      min-width: 180px !important;
-      height: auto !important;
-      min-height: 90px !important;
-      line-height: 1.2 !important;
-      margin: 0 !important;
+      align-items: stretch !important;
+      gap: 12px 18px !important;
+      width: 100% !important;
+      margin: 0 auto !important;
       padding: 0 !important;
     }
+    .cycle-track > div,
     .cycle-track > i {
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      font-size: 24px !important;
-      width: 32px !important;
-      height: 32px !important;
+      min-height: 88px !important;
+      box-sizing: border-box !important;
       margin: 0 !important;
       padding: 0 !important;
-      flex-shrink: 0 !important;
+    }
+    .cycle-track > div {
+      flex: 0 0 220px !important;
+      flex-direction: column !important;
+      text-align: center !important;
+      line-height: 1.2 !important;
+      gap: 2px !important;
+    }
+    .cycle-track > i {
+      flex: 0 0 34px !important;
+      font-size: 24px !important;
+      line-height: 1 !important;
+      color: inherit !important;
+    }
+    .cycle-track b,
+    .cycle-track strong,
+    .cycle-track small {
+      display: block !important;
+      margin: 0 !important;
+      line-height: 1.25 !important;
+    }
+    .cycle-track b {
+      font-size: 0.8rem !important;
+      letter-spacing: 0.14em !important;
+      color: #1d3d35 !important;
+    }
+    .cycle-track strong {
+      font-size: 2.15rem !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.02em !important;
+      color: #1d3d35 !important;
+    }
+    .cycle-track small {
+      font-size: 0.8rem !important;
+      opacity: 0.8 !important;
+      color: #1d3d35 !important;
     }
   </style>
 </head>
@@ -247,7 +271,7 @@
           restoreBtn.addEventListener("click", async function(){
             const targetId = restoreInput.value.trim();
             if(!targetId){
-              setStatus("端末IDを入力してください。");
+              setStatus("端末IDを入力してください.");
               return;
             }
             setStatus("復元中…");
@@ -256,7 +280,7 @@
               if(!res.ok) throw new Error("取得に失敗");
               const data = await res.json();
               if(!data.found){
-                setStatus("そのIDのバックアップは見つかりませんでした。");
+                setStatus("そのIDのバックアップは見つかりませんでした.");
                 return;
               }
               localStorage.setItem(STAMPS_KEY, JSON.stringify(data.storeIds));
